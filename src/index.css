@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+@theme {
+  --color-dark-bg: #0b0b0f;
+  --color-dark-surface: #101014;
+  --color-dark-card: #141419;
+  --color-dark-card-hover: #1a1a22;
+  --color-dark-border: #1e1e28;
+  --color-dark-border-light: #2a2a38;
+  --color-dark-text: #e8e8f0;
+  --color-dark-text-secondary: #c0c0d0;
+  --color-dark-text-muted: #6e6e82;
+
+  --color-light-bg: #f4f4f8;
+  --color-light-card: #ffffff;
+  --color-light-card-hover: #f0f0f5;
+  --color-light-border: #e2e2ea;
+  --color-light-text: #12121a;
+  --color-light-text-muted: #6b7280;
+
+  --color-fin-green: #00d47e;
+  --color-fin-red: #ff4757;
+  --color-fin-blue: #4a7dff;
+  --color-fin-purple: #9b59ff;
+  --color-fin-orange: #ffb020;
+  --color-fin-pink: #ff6b9d;
+  --color-fin-teal: #00c9a7;
+  --color-fin-cyan: #00bcd4;
+  --color-fin-amber: #ffc107;
+  --color-fin-magenta: #e91e8b;
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #2a2a3a;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3a3a4a;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.25s ease-out forwards;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
