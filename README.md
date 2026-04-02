@@ -147,8 +147,3 @@ src/
 - ✅ Empty state handling
 - ✅ Responsive design
 
----
-
-## 📄 License
-
-MIT
