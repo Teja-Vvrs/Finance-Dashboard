@@ -3,7 +3,6 @@ import { useMemo } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { categoryColors } from '../../data/transactions';
 
-// Richer, more vibrant colors matching the reference pie chart
 const pieColors = {
   Dining: '#ff4757',
   Education: '#ff6b9d',
@@ -39,11 +38,10 @@ export default function SpendingBreakdown() {
       const data = payload[0];
       const percent = ((data.value / total) * 100).toFixed(1);
       return (
-        <div className={`px-3.5 py-2.5 rounded-lg border shadow-2xl ${
-          darkMode
+        <div className={`px-3.5 py-2.5 rounded-lg border shadow-2xl ${darkMode
             ? 'bg-dark-card border-dark-border'
             : 'bg-light-card border-light-border'
-        }`}>
+          }`}>
           <p className={`text-[10px] font-medium mb-0.5 ${darkMode ? 'text-dark-text-muted' : 'text-light-text-muted'}`}>
             {data.name}
           </p>
@@ -60,11 +58,10 @@ export default function SpendingBreakdown() {
   };
 
   return (
-    <div className={`rounded-xl border p-5 animate-slide-up ${
-      darkMode
+    <div className={`rounded-xl border p-5 animate-slide-up ${darkMode
         ? 'bg-dark-card border-dark-border'
         : 'bg-light-card border-light-border'
-    }`} style={{ animationDelay: '350ms' }}>
+      }`} style={{ animationDelay: '350ms' }}>
       <div className="mb-5">
         <h2 className={`text-[15px] font-bold ${darkMode ? 'text-dark-text' : 'text-light-text'}`}>
           Spending Breakdown
@@ -112,9 +109,8 @@ export default function SpendingBreakdown() {
                 className="w-2.5 h-2.5 rounded-full shrink-0"
                 style={{ backgroundColor: pieColors[item.name] || categoryColors[item.name] || '#6b7280' }}
               />
-              <span className={`text-[11px] ${
-                darkMode ? 'text-dark-text-muted' : 'text-light-text-muted'
-              }`}>
+              <span className={`text-[11px] ${darkMode ? 'text-dark-text-muted' : 'text-light-text-muted'
+                }`}>
                 {item.name}
               </span>
             </div>

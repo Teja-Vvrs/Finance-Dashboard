@@ -10,9 +10,8 @@ function Dashboard() {
   const { darkMode } = useApp();
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${
-      darkMode ? 'bg-dark-bg' : 'bg-light-bg'
-    }`}>
+    <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-dark-bg' : 'bg-light-bg'
+      }`}>
       <Header />
 
       <main className="max-w-[1440px] mx-auto px-5 sm:px-8 py-6 space-y-7">
@@ -38,10 +37,9 @@ function Dashboard() {
         <TransactionTable />
 
         {/* Footer */}
-        <footer className={`text-center py-6 text-[10px] tracking-wider uppercase ${
-          darkMode ? 'text-dark-text-muted' : 'text-light-text-muted'
-        }`}>
-          © 2026 Finance Dashboard • Built with React & Tailwind CSS
+        <footer className={`text-center py-6 text-[10px] tracking-wider uppercase ${darkMode ? 'text-dark-text-muted' : 'text-light-text-muted'
+          }`}>
+          © 2026 Finance Dashboard
         </footer>
       </main>
     </div>
