@@ -5,12 +5,16 @@ const AppContext = createContext(null);
 
 const STORAGE_KEY = 'finance_dashboard_data';
 const USER_KEY = 'finance_dashboard_user';
+const DATA_VERSION = 2; // bump this whenever mockTransactions changes
 
 function loadFromStorage() {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
-      return JSON.parse(stored);
+      const parsed = JSON.parse(stored);
+      // If version mismatch, discard stale cache so new mockTransactions loads
+      if (parsed.version !== DATA_VERSION) return null;
+      return parsed;
     }
   } catch (e) {
     console.warn('Failed to load from localStorage:', e);
@@ -20,7 +24,7 @@ function loadFromStorage() {
 
 function saveToStorage(data) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...data, version: DATA_VERSION }));
   } catch (e) {
     console.warn('Failed to save to localStorage:', e);
   }

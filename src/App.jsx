@@ -4,7 +4,10 @@ import Header from './components/Header';
 import SummaryCards from './components/Dashboard/SummaryCards';
 import BalanceTrend from './components/Dashboard/BalanceTrend';
 import SpendingBreakdown from './components/Dashboard/SpendingBreakdown';
+import MonthlyBarChart from './components/Dashboard/MonthlyBarChart';
+import SpendingHeatmap from './components/Dashboard/SpendingHeatmap';
 import InsightCards from './components/Insights/InsightCards';
+import SpendingRoast from './components/Insights/SpendingRoast';
 import TransactionTable from './components/Transactions/TransactionTable';
 import Onboarding from './components/Onboarding';
 import { ChevronUp } from 'lucide-react';
@@ -44,13 +47,22 @@ function Dashboard() {
           </p>
         </div>
 
+        {/* AI Spending Roast */}
+        <SpendingRoast />
+
         {/* Dashboard Overview */}
         <SummaryCards />
 
-        {/* Charts */}
+        {/* Charts row 1 — Balance + Spending Breakdown */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <BalanceTrend />
           <SpendingBreakdown />
+        </div>
+
+        {/* Charts row 2 — Monthly Bar + Heatmap */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <MonthlyBarChart />
+          <SpendingHeatmap />
         </div>
 
         {/* Divider */}

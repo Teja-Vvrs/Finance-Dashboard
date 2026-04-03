@@ -34,157 +34,217 @@ const categoryColors = {
   Investment: '#a855f7',
 };
 
-function generateTransactions() {
-  const transactions = [];
-  let id = 1;
-
-  const incomeCategories = ['Salary', 'Freelance', 'Investment'];
-  const expenseCategories = ['Rent', 'Groceries', 'Dining', 'Transportation', 'Entertainment', 'Utilities', 'Shopping', 'Healthcare', 'Education'];
-
-  // Generate transactions from Jan 2026 to Apr 2026
-  for (let month = 0; month < 4; month++) {
-    const year = 2026;
-    const m = month; // 0=Jan, 1=Feb, 2=Mar, 3=Apr
-
-    // Monthly salary
-    transactions.push({
-      id: id++,
-      date: `2026-${String(m + 1).padStart(2, '0')}-08`,
-      description: 'Monthly Salary',
-      amount: 2791,
-      category: 'Salary',
-      type: 'income',
-    });
-
-    // Second income (freelance or bonus)
-    if (m % 2 === 0) {
-      const cat = incomeCategories[Math.floor(Math.random() * incomeCategories.length)];
-      const descs = descriptions[cat];
-      transactions.push({
-        id: id++,
-        date: `2026-${String(m + 1).padStart(2, '0')}-${String(15 + Math.floor(Math.random() * 10)).padStart(2, '0')}`,
-        description: descs[Math.floor(Math.random() * descs.length)],
-        amount: 500 + Math.floor(Math.random() * 2000),
-        category: cat,
-        type: 'income',
-      });
-    }
-
-    // Annual increment in Jan
-    if (m === 0) {
-      transactions.push({
-        id: id++,
-        date: '2026-01-06',
-        description: 'Annual Increment',
-        amount: 2148,
-        category: 'Salary',
-        type: 'income',
-      });
-    }
-
-    // Expenses - generate 8-12 per month
-    const numExpenses = 8 + Math.floor(Math.random() * 5);
-    for (let i = 0; i < numExpenses; i++) {
-      const cat = expenseCategories[Math.floor(Math.random() * expenseCategories.length)];
-      const descs = descriptions[cat];
-      const day = 1 + Math.floor(Math.random() * 28);
-
-      let amount;
-      switch (cat) {
-        case 'Rent': amount = 179 + Math.floor(Math.random() * 50); break;
-        case 'Groceries': amount = 45 + Math.floor(Math.random() * 120); break;
-        case 'Dining': amount = 15 + Math.floor(Math.random() * 85); break;
-        case 'Transportation': amount = 25 + Math.floor(Math.random() * 350); break;
-        case 'Entertainment': amount = 10 + Math.floor(Math.random() * 100); break;
-        case 'Utilities': amount = 50 + Math.floor(Math.random() * 200); break;
-        case 'Shopping': amount = 30 + Math.floor(Math.random() * 300); break;
-        case 'Healthcare': amount = 25 + Math.floor(Math.random() * 250); break;
-        case 'Education': amount = 20 + Math.floor(Math.random() * 150); break;
-        default: amount = 50 + Math.floor(Math.random() * 200);
-      }
-
-      transactions.push({
-        id: id++,
-        date: `2026-${String(m + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`,
-        description: descs[Math.floor(Math.random() * descs.length)],
-        amount,
-        category: cat,
-        type: 'expense',
-      });
-    }
-  }
-
-  // Sort by date
-  transactions.sort((a, b) => new Date(a.date) - new Date(b.date));
-  return transactions;
-}
-
-// Use a seeded-like approach with fixed data for consistency
+// Full year: Apr 2025 → Apr 2026
 const mockTransactions = [
-  { id: 1, date: '2026-01-02', description: 'Weekly Groceries', amount: 87, category: 'Groceries', type: 'expense' },
-  { id: 2, date: '2026-01-03', description: 'Coffee Shop', amount: 24, category: 'Dining', type: 'expense' },
-  { id: 3, date: '2026-01-04', description: 'Gas Station', amount: 376, category: 'Transportation', type: 'expense' },
-  { id: 4, date: '2026-01-05', description: 'Electricity Bill', amount: 142, category: 'Utilities', type: 'expense' },
-  { id: 5, date: '2026-01-06', description: 'Annual Increment', amount: 2148, category: 'Salary', type: 'income' },
-  { id: 6, date: '2026-01-07', description: 'Apartment Rent', amount: 179, category: 'Rent', type: 'expense' },
-  { id: 7, date: '2026-01-08', description: 'Monthly Salary', amount: 2791, category: 'Salary', type: 'income' },
-  { id: 8, date: '2026-01-09', description: 'Monthly Rent', amount: 179, category: 'Rent', type: 'expense' },
-  { id: 9, date: '2026-01-10', description: 'Netflix Subscription', amount: 15, category: 'Entertainment', type: 'expense' },
-  { id: 10, date: '2026-01-11', description: 'Online Shopping', amount: 235, category: 'Shopping', type: 'expense' },
-  { id: 11, date: '2026-01-12', description: 'Gym Membership', amount: 45, category: 'Healthcare', type: 'expense' },
-  { id: 12, date: '2026-01-14', description: 'Restaurant Dinner', amount: 67, category: 'Dining', type: 'expense' },
-  { id: 13, date: '2026-01-15', description: 'Freelance Project', amount: 1500, category: 'Freelance', type: 'income' },
-  { id: 14, date: '2026-01-17', description: 'Internet Bill', amount: 89, category: 'Utilities', type: 'expense' },
-  { id: 15, date: '2026-01-18', description: 'Fresh Market', amount: 56, category: 'Groceries', type: 'expense' },
-  { id: 16, date: '2026-01-20', description: 'Uber Ride', amount: 32, category: 'Transportation', type: 'expense' },
-  { id: 17, date: '2026-01-22', description: 'Book Purchase', amount: 28, category: 'Education', type: 'expense' },
-  { id: 18, date: '2026-01-24', description: 'Phone Bill', amount: 65, category: 'Utilities', type: 'expense' },
-  { id: 19, date: '2026-01-25', description: 'Movie Tickets', amount: 30, category: 'Entertainment', type: 'expense' },
-  { id: 20, date: '2026-01-27', description: 'Doctor Visit', amount: 120, category: 'Healthcare', type: 'expense' },
+  // ── APR 2025 ──────────────────────────────────────────────
+  { id: 100, date: '2025-04-08', description: 'Monthly Salary',      amount: 2791, category: 'Salary',         type: 'income'  },
+  { id: 101, date: '2025-04-02', description: 'Apartment Rent',      amount: 179,  category: 'Rent',           type: 'expense' },
+  { id: 102, date: '2025-04-03', description: 'Grocery Store',       amount: 92,   category: 'Groceries',      type: 'expense' },
+  { id: 103, date: '2025-04-05', description: 'Electricity Bill',    amount: 138,  category: 'Utilities',      type: 'expense' },
+  { id: 104, date: '2025-04-07', description: 'Coffee Shop',         amount: 21,   category: 'Dining',         type: 'expense' },
+  { id: 105, date: '2025-04-10', description: 'Uber Ride',           amount: 29,   category: 'Transportation', type: 'expense' },
+  { id: 106, date: '2025-04-12', description: 'Netflix Subscription',amount: 15,   category: 'Entertainment',  type: 'expense' },
+  { id: 107, date: '2025-04-14', description: 'Gym Membership',      amount: 45,   category: 'Healthcare',     type: 'expense' },
+  { id: 108, date: '2025-04-16', description: 'Online Shopping',     amount: 112,  category: 'Shopping',       type: 'expense' },
+  { id: 109, date: '2025-04-18', description: 'Internet Bill',       amount: 89,   category: 'Utilities',      type: 'expense' },
+  { id: 110, date: '2025-04-20', description: 'Restaurant Dinner',   amount: 74,   category: 'Dining',         type: 'expense' },
+  { id: 111, date: '2025-04-22', description: 'Book Purchase',       amount: 32,   category: 'Education',      type: 'expense' },
+  { id: 112, date: '2025-04-25', description: 'Freelance Project',   amount: 1200, category: 'Freelance',      type: 'income'  },
+  { id: 113, date: '2025-04-28', description: 'Phone Bill',          amount: 65,   category: 'Utilities',      type: 'expense' },
 
-  // February
-  { id: 21, date: '2026-02-01', description: 'Water Bill', amount: 45, category: 'Utilities', type: 'expense' },
-  { id: 22, date: '2026-02-03', description: 'Grocery Store', amount: 134, category: 'Groceries', type: 'expense' },
-  { id: 23, date: '2026-02-04', description: 'Parking Fee', amount: 18, category: 'Transportation', type: 'expense' },
-  { id: 24, date: '2026-02-05', description: 'Lunch Meeting', amount: 48, category: 'Dining', type: 'expense' },
-  { id: 25, date: '2026-02-06', description: 'Clothing Store', amount: 189, category: 'Shopping', type: 'expense' },
-  { id: 26, date: '2026-02-08', description: 'Monthly Salary', amount: 2791, category: 'Salary', type: 'income' },
-  { id: 27, date: '2026-02-09', description: 'Apartment Rent', amount: 179, category: 'Rent', type: 'expense' },
-  { id: 28, date: '2026-02-10', description: 'Spotify', amount: 12, category: 'Entertainment', type: 'expense' },
-  { id: 29, date: '2026-02-12', description: 'Gas Bill', amount: 78, category: 'Utilities', type: 'expense' },
-  { id: 30, date: '2026-02-14', description: 'Restaurant Dinner', amount: 95, category: 'Dining', type: 'expense' },
-  { id: 31, date: '2026-02-15', description: 'Online Course', amount: 49, category: 'Education', type: 'expense' },
-  { id: 32, date: '2026-02-17', description: 'Pharmacy', amount: 34, category: 'Healthcare', type: 'expense' },
-  { id: 33, date: '2026-02-19', description: 'Metro Card', amount: 50, category: 'Transportation', type: 'expense' },
-  { id: 34, date: '2026-02-20', description: 'Stock Dividend', amount: 320, category: 'Investment', type: 'income' },
-  { id: 35, date: '2026-02-22', description: 'Electronics', amount: 299, category: 'Shopping', type: 'expense' },
-  { id: 36, date: '2026-02-24', description: 'Organic Produce', amount: 72, category: 'Groceries', type: 'expense' },
-  { id: 37, date: '2026-02-26', description: 'Concert Tickets', amount: 85, category: 'Entertainment', type: 'expense' },
-  { id: 38, date: '2026-02-28', description: 'Dental Checkup', amount: 175, category: 'Healthcare', type: 'expense' },
+  // ── MAY 2025 ──────────────────────────────────────────────
+  { id: 114, date: '2025-05-08', description: 'Monthly Salary',      amount: 2791, category: 'Salary',         type: 'income'  },
+  { id: 115, date: '2025-05-02', description: 'Monthly Rent',        amount: 179,  category: 'Rent',           type: 'expense' },
+  { id: 116, date: '2025-05-04', description: 'Weekly Groceries',    amount: 78,   category: 'Groceries',      type: 'expense' },
+  { id: 117, date: '2025-05-06', description: 'Water Bill',          amount: 44,   category: 'Utilities',      type: 'expense' },
+  { id: 118, date: '2025-05-09', description: 'Gas Station',         amount: 310,  category: 'Transportation', type: 'expense' },
+  { id: 119, date: '2025-05-11', description: 'Brunch',              amount: 38,   category: 'Dining',         type: 'expense' },
+  { id: 120, date: '2025-05-13', description: 'Spotify',             amount: 12,   category: 'Entertainment',  type: 'expense' },
+  { id: 121, date: '2025-05-15', description: 'Stock Dividend',      amount: 280,  category: 'Investment',     type: 'income'  },
+  { id: 122, date: '2025-05-17', description: 'Clothing Store',      amount: 145,  category: 'Shopping',       type: 'expense' },
+  { id: 123, date: '2025-05-19', description: 'Doctor Visit',        amount: 95,   category: 'Healthcare',     type: 'expense' },
+  { id: 124, date: '2025-05-21', description: 'Gas Bill',            amount: 72,   category: 'Utilities',      type: 'expense' },
+  { id: 125, date: '2025-05-23', description: 'Online Course',       amount: 49,   category: 'Education',      type: 'expense' },
+  { id: 126, date: '2025-05-26', description: 'Lunch Meeting',       amount: 55,   category: 'Dining',         type: 'expense' },
+  { id: 127, date: '2025-05-29', description: 'Fresh Market',        amount: 63,   category: 'Groceries',      type: 'expense' },
 
-  // March
-  { id: 39, date: '2026-03-01', description: 'Electricity Bill', amount: 156, category: 'Utilities', type: 'expense' },
-  { id: 40, date: '2026-03-03', description: 'Brunch', amount: 42, category: 'Dining', type: 'expense' },
-  { id: 41, date: '2026-03-04', description: 'Car Wash', amount: 25, category: 'Transportation', type: 'expense' },
-  { id: 42, date: '2026-03-05', description: 'Gift Purchase', amount: 150, category: 'Shopping', type: 'expense' },
-  { id: 43, date: '2026-03-06', description: 'Consulting Fee', amount: 850, category: 'Freelance', type: 'income' },
-  { id: 44, date: '2026-03-08', description: 'Monthly Salary', amount: 2791, category: 'Salary', type: 'income' },
-  { id: 45, date: '2026-03-09', description: 'Monthly Rent', amount: 179, category: 'Rent', type: 'expense' },
-  { id: 46, date: '2026-03-10', description: 'Netflix Subscription', amount: 15, category: 'Entertainment', type: 'expense' },
-  { id: 47, date: '2026-03-12', description: 'Weekly Groceries', amount: 98, category: 'Groceries', type: 'expense' },
-  { id: 48, date: '2026-03-14', description: 'Workshop Fee', amount: 75, category: 'Education', type: 'expense' },
-  { id: 49, date: '2026-03-15', description: 'Health Insurance', amount: 200, category: 'Healthcare', type: 'expense' },
-  { id: 50, date: '2026-03-17', description: 'Fast Food', amount: 19, category: 'Dining', type: 'expense' },
-  { id: 51, date: '2026-03-19', description: 'Uber Ride', amount: 28, category: 'Transportation', type: 'expense' },
-  { id: 52, date: '2026-03-20', description: 'Internet Bill', amount: 89, category: 'Utilities', type: 'expense' },
-  { id: 53, date: '2026-03-22', description: 'Home Decor', amount: 120, category: 'Shopping', type: 'expense' },
-  { id: 54, date: '2026-03-24', description: 'Gaming Purchase', amount: 60, category: 'Entertainment', type: 'expense' },
-  { id: 55, date: '2026-03-26', description: 'Fresh Market', amount: 64, category: 'Groceries', type: 'expense' },
-  { id: 56, date: '2026-03-28', description: 'Phone Bill', amount: 65, category: 'Utilities', type: 'expense' },
+  // ── JUN 2025 ──────────────────────────────────────────────
+  { id: 128, date: '2025-06-08', description: 'Monthly Salary',      amount: 2791, category: 'Salary',         type: 'income'  },
+  { id: 129, date: '2025-06-01', description: 'Apartment Rent',      amount: 179,  category: 'Rent',           type: 'expense' },
+  { id: 130, date: '2025-06-03', description: 'Grocery Store',       amount: 105,  category: 'Groceries',      type: 'expense' },
+  { id: 131, date: '2025-06-05', description: 'Electricity Bill',    amount: 162,  category: 'Utilities',      type: 'expense' },
+  { id: 132, date: '2025-06-07', description: 'Consulting Fee',      amount: 950,  category: 'Freelance',      type: 'income'  },
+  { id: 133, date: '2025-06-10', description: 'Movie Tickets',       amount: 28,   category: 'Entertainment',  type: 'expense' },
+  { id: 134, date: '2025-06-12', description: 'Parking Fee',         amount: 22,   category: 'Transportation', type: 'expense' },
+  { id: 135, date: '2025-06-14', description: 'Pharmacy',            amount: 41,   category: 'Healthcare',     type: 'expense' },
+  { id: 136, date: '2025-06-16', description: 'Home Decor',          amount: 185,  category: 'Shopping',       type: 'expense' },
+  { id: 137, date: '2025-06-18', description: 'Internet Bill',       amount: 89,   category: 'Utilities',      type: 'expense' },
+  { id: 138, date: '2025-06-20', description: 'Restaurant Dinner',   amount: 88,   category: 'Dining',         type: 'expense' },
+  { id: 139, date: '2025-06-23', description: 'Workshop Fee',        amount: 75,   category: 'Education',      type: 'expense' },
+  { id: 140, date: '2025-06-26', description: 'Organic Produce',     amount: 58,   category: 'Groceries',      type: 'expense' },
+  { id: 141, date: '2025-06-29', description: 'Phone Bill',          amount: 65,   category: 'Utilities',      type: 'expense' },
 
-  // April (partial)
-  { id: 57, date: '2026-04-01', description: 'Water Bill', amount: 42, category: 'Utilities', type: 'expense' },
-  { id: 58, date: '2026-04-02', description: 'Grocery Store', amount: 110, category: 'Groceries', type: 'expense' },
+  // ── JUL 2025 ──────────────────────────────────────────────
+  { id: 142, date: '2025-07-08', description: 'Monthly Salary',      amount: 2791, category: 'Salary',         type: 'income'  },
+  { id: 143, date: '2025-07-02', description: 'Monthly Rent',        amount: 179,  category: 'Rent',           type: 'expense' },
+  { id: 144, date: '2025-07-04', description: 'Weekly Groceries',    amount: 84,   category: 'Groceries',      type: 'expense' },
+  { id: 145, date: '2025-07-06', description: 'Water Bill',          amount: 48,   category: 'Utilities',      type: 'expense' },
+  { id: 146, date: '2025-07-09', description: 'Concert Tickets',     amount: 110,  category: 'Entertainment',  type: 'expense' },
+  { id: 147, date: '2025-07-11', description: 'Uber Ride',           amount: 35,   category: 'Transportation', type: 'expense' },
+  { id: 148, date: '2025-07-13', description: 'Investment Return',   amount: 420,  category: 'Investment',     type: 'income'  },
+  { id: 149, date: '2025-07-15', description: 'Electronics',         amount: 340,  category: 'Shopping',       type: 'expense' },
+  { id: 150, date: '2025-07-17', description: 'Dental Checkup',      amount: 160,  category: 'Healthcare',     type: 'expense' },
+  { id: 151, date: '2025-07-19', description: 'Gas Bill',            amount: 68,   category: 'Utilities',      type: 'expense' },
+  { id: 152, date: '2025-07-21', description: 'Fast Food',           amount: 22,   category: 'Dining',         type: 'expense' },
+  { id: 153, date: '2025-07-23', description: 'Certification Exam',  amount: 120,  category: 'Education',      type: 'expense' },
+  { id: 154, date: '2025-07-25', description: 'Freelance Project',   amount: 1800, category: 'Freelance',      type: 'income'  },
+  { id: 155, date: '2025-07-28', description: 'Grocery Store',       amount: 97,   category: 'Groceries',      type: 'expense' },
+
+  // ── AUG 2025 ──────────────────────────────────────────────
+  { id: 156, date: '2025-08-08', description: 'Monthly Salary',      amount: 2791, category: 'Salary',         type: 'income'  },
+  { id: 157, date: '2025-08-01', description: 'Apartment Rent',      amount: 179,  category: 'Rent',           type: 'expense' },
+  { id: 158, date: '2025-08-03', description: 'Fresh Market',        amount: 71,   category: 'Groceries',      type: 'expense' },
+  { id: 159, date: '2025-08-05', description: 'Electricity Bill',    amount: 175,  category: 'Utilities',      type: 'expense' },
+  { id: 160, date: '2025-08-07', description: 'Coffee Shop',         amount: 19,   category: 'Dining',         type: 'expense' },
+  { id: 161, date: '2025-08-10', description: 'Metro Card',          amount: 50,   category: 'Transportation', type: 'expense' },
+  { id: 162, date: '2025-08-12', description: 'Gaming Purchase',     amount: 65,   category: 'Entertainment',  type: 'expense' },
+  { id: 163, date: '2025-08-14', description: 'Health Insurance',    amount: 200,  category: 'Healthcare',     type: 'expense' },
+  { id: 164, date: '2025-08-16', description: 'Gift Purchase',       amount: 130,  category: 'Shopping',       type: 'expense' },
+  { id: 165, date: '2025-08-18', description: 'Internet Bill',       amount: 89,   category: 'Utilities',      type: 'expense' },
+  { id: 166, date: '2025-08-20', description: 'Brunch',              amount: 44,   category: 'Dining',         type: 'expense' },
+  { id: 167, date: '2025-08-22', description: 'Book Purchase',       amount: 27,   category: 'Education',      type: 'expense' },
+  { id: 168, date: '2025-08-25', description: 'Stock Dividend',      amount: 310,  category: 'Investment',     type: 'income'  },
+  { id: 169, date: '2025-08-28', description: 'Car Wash',            amount: 25,   category: 'Transportation', type: 'expense' },
+
+  // ── SEP 2025 ──────────────────────────────────────────────
+  { id: 170, date: '2025-09-08', description: 'Monthly Salary',      amount: 2791, category: 'Salary',         type: 'income'  },
+  { id: 171, date: '2025-09-01', description: 'Monthly Rent',        amount: 179,  category: 'Rent',           type: 'expense' },
+  { id: 172, date: '2025-09-03', description: 'Grocery Store',       amount: 88,   category: 'Groceries',      type: 'expense' },
+  { id: 173, date: '2025-09-05', description: 'Water Bill',          amount: 43,   category: 'Utilities',      type: 'expense' },
+  { id: 174, date: '2025-09-07', description: 'Design Work',         amount: 750,  category: 'Freelance',      type: 'income'  },
+  { id: 175, date: '2025-09-10', description: 'Restaurant Dinner',   amount: 82,   category: 'Dining',         type: 'expense' },
+  { id: 176, date: '2025-09-12', description: 'Gas Station',         amount: 290,  category: 'Transportation', type: 'expense' },
+  { id: 177, date: '2025-09-14', description: 'Spotify',             amount: 12,   category: 'Entertainment',  type: 'expense' },
+  { id: 178, date: '2025-09-16', description: 'Doctor Visit',        amount: 110,  category: 'Healthcare',     type: 'expense' },
+  { id: 179, date: '2025-09-18', description: 'Online Shopping',     amount: 198,  category: 'Shopping',       type: 'expense' },
+  { id: 180, date: '2025-09-20', description: 'Phone Bill',          amount: 65,   category: 'Utilities',      type: 'expense' },
+  { id: 181, date: '2025-09-22', description: 'Online Course',       amount: 59,   category: 'Education',      type: 'expense' },
+  { id: 182, date: '2025-09-25', description: 'Lunch Meeting',       amount: 47,   category: 'Dining',         type: 'expense' },
+  { id: 183, date: '2025-09-28', description: 'Organic Produce',     amount: 66,   category: 'Groceries',      type: 'expense' },
+
+  // ── OCT 2025 ──────────────────────────────────────────────
+  { id: 184, date: '2025-10-08', description: 'Monthly Salary',      amount: 2791, category: 'Salary',         type: 'income'  },
+  { id: 185, date: '2025-10-01', description: 'Apartment Rent',      amount: 179,  category: 'Rent',           type: 'expense' },
+  { id: 186, date: '2025-10-03', description: 'Weekly Groceries',    amount: 93,   category: 'Groceries',      type: 'expense' },
+  { id: 187, date: '2025-10-05', description: 'Electricity Bill',    amount: 148,  category: 'Utilities',      type: 'expense' },
+  { id: 188, date: '2025-10-07', description: 'Parking Fee',         amount: 20,   category: 'Transportation', type: 'expense' },
+  { id: 189, date: '2025-10-09', description: 'Interest Income',     amount: 195,  category: 'Investment',     type: 'income'  },
+  { id: 190, date: '2025-10-11', description: 'Movie Tickets',       amount: 32,   category: 'Entertainment',  type: 'expense' },
+  { id: 191, date: '2025-10-13', description: 'Gym Membership',      amount: 45,   category: 'Healthcare',     type: 'expense' },
+  { id: 192, date: '2025-10-15', description: 'Clothing Store',      amount: 220,  category: 'Shopping',       type: 'expense' },
+  { id: 193, date: '2025-10-17', description: 'Internet Bill',       amount: 89,   category: 'Utilities',      type: 'expense' },
+  { id: 194, date: '2025-10-19', description: 'Brunch',              amount: 36,   category: 'Dining',         type: 'expense' },
+  { id: 195, date: '2025-10-21', description: 'Book Purchase',       amount: 24,   category: 'Education',      type: 'expense' },
+  { id: 196, date: '2025-10-24', description: 'Web Development',     amount: 1100, category: 'Freelance',      type: 'income'  },
+  { id: 197, date: '2025-10-27', description: 'Gas Bill',            amount: 74,   category: 'Utilities',      type: 'expense' },
+
+  // ── NOV 2025 ──────────────────────────────────────────────
+  { id: 198, date: '2025-11-08', description: 'Monthly Salary',      amount: 2791, category: 'Salary',         type: 'income'  },
+  { id: 199, date: '2025-11-01', description: 'Monthly Rent',        amount: 179,  category: 'Rent',           type: 'expense' },
+  { id: 200, date: '2025-11-03', description: 'Grocery Store',       amount: 101,  category: 'Groceries',      type: 'expense' },
+  { id: 201, date: '2025-11-05', description: 'Water Bill',          amount: 46,   category: 'Utilities',      type: 'expense' },
+  { id: 202, date: '2025-11-07', description: 'Uber Ride',           amount: 31,   category: 'Transportation', type: 'expense' },
+  { id: 203, date: '2025-11-10', description: 'Concert Tickets',     amount: 95,   category: 'Entertainment',  type: 'expense' },
+  { id: 204, date: '2025-11-12', description: 'Pharmacy',            amount: 38,   category: 'Healthcare',     type: 'expense' },
+  { id: 205, date: '2025-11-14', description: 'Electronics',         amount: 450,  category: 'Shopping',       type: 'expense' },
+  { id: 206, date: '2025-11-16', description: 'Phone Bill',          amount: 65,   category: 'Utilities',      type: 'expense' },
+  { id: 207, date: '2025-11-18', description: 'Restaurant Dinner',   amount: 91,   category: 'Dining',         type: 'expense' },
+  { id: 208, date: '2025-11-20', description: 'Workshop Fee',        amount: 80,   category: 'Education',      type: 'expense' },
+  { id: 209, date: '2025-11-22', description: 'Stock Dividend',      amount: 360,  category: 'Investment',     type: 'income'  },
+  { id: 210, date: '2025-11-25', description: 'Home Decor',          amount: 165,  category: 'Shopping',       type: 'expense' },
+  { id: 211, date: '2025-11-28', description: 'Fresh Market',        amount: 76,   category: 'Groceries',      type: 'expense' },
+
+  // ── DEC 2025 ──────────────────────────────────────────────
+  { id: 212, date: '2025-12-08', description: 'Monthly Salary',      amount: 2791, category: 'Salary',         type: 'income'  },
+  { id: 213, date: '2025-12-05', description: 'Bonus Payment',       amount: 1500, category: 'Salary',         type: 'income'  },
+  { id: 214, date: '2025-12-01', description: 'Apartment Rent',      amount: 179,  category: 'Rent',           type: 'expense' },
+  { id: 215, date: '2025-12-03', description: 'Weekly Groceries',    amount: 118,  category: 'Groceries',      type: 'expense' },
+  { id: 216, date: '2025-12-06', description: 'Electricity Bill',    amount: 168,  category: 'Utilities',      type: 'expense' },
+  { id: 217, date: '2025-12-09', description: 'Gift Purchase',       amount: 280,  category: 'Shopping',       type: 'expense' },
+  { id: 218, date: '2025-12-11', description: 'Gas Station',         amount: 320,  category: 'Transportation', type: 'expense' },
+  { id: 219, date: '2025-12-13', description: 'Netflix Subscription',amount: 15,   category: 'Entertainment',  type: 'expense' },
+  { id: 220, date: '2025-12-15', description: 'Consulting Fee',      amount: 1300, category: 'Freelance',      type: 'income'  },
+  { id: 221, date: '2025-12-17', description: 'Dental Checkup',      amount: 180,  category: 'Healthcare',     type: 'expense' },
+  { id: 222, date: '2025-12-19', description: 'Online Shopping',     amount: 310,  category: 'Shopping',       type: 'expense' },
+  { id: 223, date: '2025-12-21', description: 'Internet Bill',       amount: 89,   category: 'Utilities',      type: 'expense' },
+  { id: 224, date: '2025-12-23', description: 'Restaurant Dinner',   amount: 105,  category: 'Dining',         type: 'expense' },
+  { id: 225, date: '2025-12-27', description: 'Certification Exam',  amount: 130,  category: 'Education',      type: 'expense' },
+
+  // ── JAN 2026 ──────────────────────────────────────────────
+  { id: 1,  date: '2026-01-02', description: 'Weekly Groceries',    amount: 87,   category: 'Groceries',      type: 'expense' },
+  { id: 2,  date: '2026-01-03', description: 'Coffee Shop',         amount: 24,   category: 'Dining',         type: 'expense' },
+  { id: 3,  date: '2026-01-04', description: 'Gas Station',         amount: 376,  category: 'Transportation', type: 'expense' },
+  { id: 4,  date: '2026-01-05', description: 'Electricity Bill',    amount: 142,  category: 'Utilities',      type: 'expense' },
+  { id: 5,  date: '2026-01-06', description: 'Annual Increment',    amount: 2148, category: 'Salary',         type: 'income'  },
+  { id: 6,  date: '2026-01-07', description: 'Apartment Rent',      amount: 179,  category: 'Rent',           type: 'expense' },
+  { id: 7,  date: '2026-01-08', description: 'Monthly Salary',      amount: 2791, category: 'Salary',         type: 'income'  },
+  { id: 8,  date: '2026-01-09', description: 'Monthly Rent',        amount: 179,  category: 'Rent',           type: 'expense' },
+  { id: 9,  date: '2026-01-10', description: 'Netflix Subscription',amount: 15,   category: 'Entertainment',  type: 'expense' },
+  { id: 10, date: '2026-01-11', description: 'Online Shopping',     amount: 235,  category: 'Shopping',       type: 'expense' },
+  { id: 11, date: '2026-01-12', description: 'Gym Membership',      amount: 45,   category: 'Healthcare',     type: 'expense' },
+  { id: 12, date: '2026-01-14', description: 'Restaurant Dinner',   amount: 67,   category: 'Dining',         type: 'expense' },
+  { id: 13, date: '2026-01-15', description: 'Freelance Project',   amount: 1500, category: 'Freelance',      type: 'income'  },
+  { id: 14, date: '2026-01-17', description: 'Internet Bill',       amount: 89,   category: 'Utilities',      type: 'expense' },
+  { id: 15, date: '2026-01-18', description: 'Fresh Market',        amount: 56,   category: 'Groceries',      type: 'expense' },
+  { id: 16, date: '2026-01-20', description: 'Uber Ride',           amount: 32,   category: 'Transportation', type: 'expense' },
+  { id: 17, date: '2026-01-22', description: 'Book Purchase',       amount: 28,   category: 'Education',      type: 'expense' },
+  { id: 18, date: '2026-01-24', description: 'Phone Bill',          amount: 65,   category: 'Utilities',      type: 'expense' },
+  { id: 19, date: '2026-01-25', description: 'Movie Tickets',       amount: 30,   category: 'Entertainment',  type: 'expense' },
+  { id: 20, date: '2026-01-27', description: 'Doctor Visit',        amount: 120,  category: 'Healthcare',     type: 'expense' },
+
+  // ── FEB 2026 ──────────────────────────────────────────────
+  { id: 21, date: '2026-02-01', description: 'Water Bill',          amount: 45,   category: 'Utilities',      type: 'expense' },
+  { id: 22, date: '2026-02-03', description: 'Grocery Store',       amount: 134,  category: 'Groceries',      type: 'expense' },
+  { id: 23, date: '2026-02-04', description: 'Parking Fee',         amount: 18,   category: 'Transportation', type: 'expense' },
+  { id: 24, date: '2026-02-05', description: 'Lunch Meeting',       amount: 48,   category: 'Dining',         type: 'expense' },
+  { id: 25, date: '2026-02-06', description: 'Clothing Store',      amount: 189,  category: 'Shopping',       type: 'expense' },
+  { id: 26, date: '2026-02-08', description: 'Monthly Salary',      amount: 2791, category: 'Salary',         type: 'income'  },
+  { id: 27, date: '2026-02-09', description: 'Apartment Rent',      amount: 179,  category: 'Rent',           type: 'expense' },
+  { id: 28, date: '2026-02-10', description: 'Spotify',             amount: 12,   category: 'Entertainment',  type: 'expense' },
+  { id: 29, date: '2026-02-12', description: 'Gas Bill',            amount: 78,   category: 'Utilities',      type: 'expense' },
+  { id: 30, date: '2026-02-14', description: 'Restaurant Dinner',   amount: 95,   category: 'Dining',         type: 'expense' },
+  { id: 31, date: '2026-02-15', description: 'Online Course',       amount: 49,   category: 'Education',      type: 'expense' },
+  { id: 32, date: '2026-02-17', description: 'Pharmacy',            amount: 34,   category: 'Healthcare',     type: 'expense' },
+  { id: 33, date: '2026-02-19', description: 'Metro Card',          amount: 50,   category: 'Transportation', type: 'expense' },
+  { id: 34, date: '2026-02-20', description: 'Stock Dividend',      amount: 320,  category: 'Investment',     type: 'income'  },
+  { id: 35, date: '2026-02-22', description: 'Electronics',         amount: 299,  category: 'Shopping',       type: 'expense' },
+  { id: 36, date: '2026-02-24', description: 'Organic Produce',     amount: 72,   category: 'Groceries',      type: 'expense' },
+  { id: 37, date: '2026-02-26', description: 'Concert Tickets',     amount: 85,   category: 'Entertainment',  type: 'expense' },
+  { id: 38, date: '2026-02-28', description: 'Dental Checkup',      amount: 175,  category: 'Healthcare',     type: 'expense' },
+
+  // ── MAR 2026 ──────────────────────────────────────────────
+  { id: 39, date: '2026-03-01', description: 'Electricity Bill',    amount: 156,  category: 'Utilities',      type: 'expense' },
+  { id: 40, date: '2026-03-03', description: 'Brunch',              amount: 42,   category: 'Dining',         type: 'expense' },
+  { id: 41, date: '2026-03-04', description: 'Car Wash',            amount: 25,   category: 'Transportation', type: 'expense' },
+  { id: 42, date: '2026-03-05', description: 'Gift Purchase',       amount: 150,  category: 'Shopping',       type: 'expense' },
+  { id: 43, date: '2026-03-06', description: 'Consulting Fee',      amount: 850,  category: 'Freelance',      type: 'income'  },
+  { id: 44, date: '2026-03-08', description: 'Monthly Salary',      amount: 2791, category: 'Salary',         type: 'income'  },
+  { id: 45, date: '2026-03-09', description: 'Monthly Rent',        amount: 179,  category: 'Rent',           type: 'expense' },
+  { id: 46, date: '2026-03-10', description: 'Netflix Subscription',amount: 15,   category: 'Entertainment',  type: 'expense' },
+  { id: 47, date: '2026-03-12', description: 'Weekly Groceries',    amount: 98,   category: 'Groceries',      type: 'expense' },
+  { id: 48, date: '2026-03-14', description: 'Workshop Fee',        amount: 75,   category: 'Education',      type: 'expense' },
+  { id: 49, date: '2026-03-15', description: 'Health Insurance',    amount: 200,  category: 'Healthcare',     type: 'expense' },
+  { id: 50, date: '2026-03-17', description: 'Fast Food',           amount: 19,   category: 'Dining',         type: 'expense' },
+  { id: 51, date: '2026-03-19', description: 'Uber Ride',           amount: 28,   category: 'Transportation', type: 'expense' },
+  { id: 52, date: '2026-03-20', description: 'Internet Bill',       amount: 89,   category: 'Utilities',      type: 'expense' },
+  { id: 53, date: '2026-03-22', description: 'Home Decor',          amount: 120,  category: 'Shopping',       type: 'expense' },
+  { id: 54, date: '2026-03-24', description: 'Gaming Purchase',     amount: 60,   category: 'Entertainment',  type: 'expense' },
+  { id: 55, date: '2026-03-26', description: 'Fresh Market',        amount: 64,   category: 'Groceries',      type: 'expense' },
+  { id: 56, date: '2026-03-28', description: 'Phone Bill',          amount: 65,   category: 'Utilities',      type: 'expense' },
+
+  // ── APR 2026 (partial) ────────────────────────────────────
+  { id: 57, date: '2026-04-01', description: 'Water Bill',          amount: 42,   category: 'Utilities',      type: 'expense' },
+  { id: 58, date: '2026-04-02', description: 'Grocery Store',       amount: 110,  category: 'Groceries',      type: 'expense' },
 ];
 
 export { mockTransactions, categories, categoryColors, descriptions };
