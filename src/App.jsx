@@ -6,10 +6,18 @@ import BalanceTrend from './components/Dashboard/BalanceTrend';
 import SpendingBreakdown from './components/Dashboard/SpendingBreakdown';
 import InsightCards from './components/Insights/InsightCards';
 import TransactionTable from './components/Transactions/TransactionTable';
+import Onboarding from './components/Onboarding';
 import { ChevronUp } from 'lucide-react';
 
+function getGreeting() {
+  const h = new Date().getHours();
+  if (h < 12) return 'morning';
+  if (h < 17) return 'afternoon';
+  return 'evening';
+}
+
 function Dashboard() {
-  const { darkMode } = useApp();
+  const { darkMode, user } = useApp();
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
@@ -26,6 +34,16 @@ function Dashboard() {
       <Header />
 
       <main className="max-w-[1440px] mx-auto px-5 sm:px-8 py-6 space-y-7">
+        {/* Personalised greeting */}
+        <div className="animate-fade-in">
+          <h2 className={`text-2xl font-bold tracking-tight ${darkMode ? 'text-dark-text' : 'text-light-text'}`}>
+            Good {getGreeting()}, {user?.name?.split(' ')[0]} 👋
+          </h2>
+          <p className={`text-sm mt-1 ${darkMode ? 'text-dark-text-muted' : 'text-light-text-muted'}`}>
+            Here's a snapshot of your finances today.
+          </p>
+        </div>
+
         {/* Dashboard Overview */}
         <SummaryCards />
 
@@ -73,5 +91,6 @@ function Dashboard() {
 }
 
 export default function App() {
-  return <Dashboard />;
+  const { user } = useApp();
+  return user ? <Dashboard /> : <Onboarding />;
 }

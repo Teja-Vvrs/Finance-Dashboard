@@ -2,7 +2,7 @@ import { useApp } from '../context/AppContext';
 import { Sun, Moon, User, Shield } from 'lucide-react';
 
 export default function Header() {
-  const { darkMode, toggleDarkMode, role, switchRole } = useApp();
+  const { darkMode, toggleDarkMode, role, switchRole, user } = useApp();
 
   return (
     <header className={`sticky top-0 z-50 ${
@@ -69,6 +69,77 @@ export default function Header() {
               <option value="viewer" className="bg-dark-card text-dark-text">Viewer</option>
               <option value="admin" className="bg-dark-card text-dark-text">Admin</option>
             </select>
+          </div>
+
+          {/* Divider */}
+          <div className={`w-px h-6 ${darkMode ? 'bg-dark-border' : 'bg-light-border'}`} />
+
+          {/* Profile */}
+          <div className="flex items-center gap-2.5 group relative cursor-pointer">
+            {/* Avatar */}
+            <div className="relative">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-fin-teal to-fin-blue flex items-center justify-center text-white text-[11px] font-bold shadow-md shadow-fin-teal/20 ring-2 ring-fin-teal/30">
+                {user?.initials}
+              </div>
+              {/* Online dot */}
+              <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-fin-green border-2 border-dark-bg" />
+            </div>
+
+            {/* Name + role — hidden on small screens */}
+            <div className="hidden sm:block leading-tight">
+              <p className={`text-[12px] font-semibold leading-tight ${
+                darkMode ? 'text-dark-text' : 'text-light-text'
+              }`}>
+                {user?.name}
+              </p>
+              <p className={`text-[9px] uppercase tracking-[2px] font-medium ${
+                role === 'admin' ? 'text-fin-orange' : (darkMode ? 'text-dark-text-muted' : 'text-light-text-muted')
+              }`}>
+                {role}
+              </p>
+            </div>
+
+            {/* Hover dropdown */}
+            <div className={`absolute right-0 top-full mt-3 w-52 rounded-xl border shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 overflow-hidden ${
+              darkMode
+                ? 'bg-dark-card border-dark-border shadow-black/50'
+                : 'bg-light-card border-light-border shadow-black/10'
+            }`}>
+              {/* Profile header inside dropdown */}
+              <div className={`px-4 py-3.5 border-b ${darkMode ? 'border-dark-border' : 'border-light-border'}`}>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-fin-teal to-fin-blue flex items-center justify-center text-white text-[13px] font-bold shrink-0">
+                    {user?.initials}
+                  </div>
+                  <div className="min-w-0">
+                    <p className={`text-[13px] font-bold truncate ${darkMode ? 'text-dark-text' : 'text-light-text'}`}>
+                      {user?.name}
+                    </p>
+                    <p className={`text-[10px] truncate ${darkMode ? 'text-dark-text-muted' : 'text-light-text-muted'}`}>
+                      {user?.email}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Stats row */}
+              <div className={`grid grid-cols-2 divide-x ${darkMode ? 'divide-dark-border' : 'divide-light-border'}`}>
+                <div className="px-4 py-3 text-center">
+                  <p className={`text-[11px] font-bold ${darkMode ? 'text-dark-text' : 'text-light-text'}`}>
+                    {role === 'admin' ? 'Admin' : 'Viewer'}
+                  </p>
+                  <p className={`text-[9px] uppercase tracking-[1.5px] mt-0.5 ${darkMode ? 'text-dark-text-muted' : 'text-light-text-muted'}`}>
+                    Role
+                  </p>
+                </div>
+                <div className="px-4 py-3 text-center">
+                  <p className="text-[11px] font-bold text-fin-green">Active</p>
+                  <p className={`text-[9px] uppercase tracking-[1.5px] mt-0.5 ${darkMode ? 'text-dark-text-muted' : 'text-light-text-muted'}`}>
+                    Status
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

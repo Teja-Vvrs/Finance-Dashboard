@@ -4,6 +4,7 @@ import { mockTransactions } from '../data/transactions';
 const AppContext = createContext(null);
 
 const STORAGE_KEY = 'finance_dashboard_data';
+const USER_KEY = 'finance_dashboard_user';
 
 function loadFromStorage() {
   try {
@@ -27,6 +28,24 @@ function saveToStorage(data) {
 
 export function AppProvider({ children }) {
   const stored = loadFromStorage();
+
+  const [user, setUser] = useState(() => {
+    try {
+      const u = localStorage.getItem(USER_KEY);
+      return u ? JSON.parse(u) : null;
+    } catch { return null; }
+  });
+
+  const saveUser = useCallback((u) => {
+    try { localStorage.setItem(USER_KEY, JSON.stringify(u)); } catch {}
+  }, []);
+
+  const submitUser = useCallback((name, email) => {
+    const initials = name.trim().split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+    const u = { name: name.trim(), email: email.trim(), initials };
+    setUser(u);
+    saveUser(u);
+  }, [saveUser]);
 
   const [transactions, setTransactions] = useState(stored?.transactions || mockTransactions);
   const [role, setRole] = useState(stored?.role || 'viewer');
@@ -147,6 +166,8 @@ export function AppProvider({ children }) {
   const totalBalance = useMemo(() => totalIncome - totalExpenses, [totalIncome, totalExpenses]);
 
   const value = {
+    user,
+    submitUser,
     transactions,
     filteredTransactions,
     role,
